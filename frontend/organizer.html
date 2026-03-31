@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Organizer Console</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode" defer></script>
+    <script type="module" src="./organizer.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav">
+        <a href="./index.html">Home</a>
+        <a class="active-link" href="./organizer.html">Organizer</a>
+        <a href="./attendee.html">Attendee</a>
+      </nav>
+
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Organizer Workspace</p>
+          <h1>Manage Events & Verify Entry</h1>
+          <p class="hero-copy">
+            This page is for the organizer/admin wallet. Create events, inspect
+            event inventory, verify tickets, and mark them used at entry.
+          </p>
+        </div>
+        <div class="wallet-card">
+          <button id="connectWalletBtn" class="primary-btn">Connect Wallet</button>
+          <p id="walletStatus" class="muted">
+            Connect the organizer wallet on Sepolia.
+          </p>
+          <div class="network-info">
+            <span id="networkName">Network: Not connected</span>
+            <span id="accountAddress">Account: -</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="grid">
+        <section class="panel">
+          <h2>Contract Status</h2>
+          <div id="contractStatus" class="status-box">Waiting for wallet connection.</div>
+        </section>
+
+        <section class="panel">
+          <h2>Create Event</h2>
+          <form id="createEventForm" class="stack-form">
+            <label for="eventName">Event name</label>
+            <input id="eventName" type="text" placeholder="Hackathon Demo Day" required />
+            <label for="maxTickets">Maximum tickets</label>
+            <input id="maxTickets" type="number" min="1" placeholder="100" required />
+            <button type="submit" class="primary-btn">Create Event</button>
+          </form>
+        </section>
+
+        <section class="panel wide-panel">
+          <div class="panel-title-row">
+            <h2>Available Events</h2>
+            <button id="refreshEventsBtn" class="ghost-btn">Refresh</button>
+          </div>
+          <div id="eventsList" class="card-list empty-state">
+            Connect your organizer wallet on Sepolia to load events.
+          </div>
+        </section>
+
+        <section class="panel wide-panel">
+          <h2>My Events</h2>
+          <div id="myEventsList" class="card-list empty-state">
+            Connect your organizer wallet to view events created by you.
+          </div>
+        </section>
+
+        <section class="panel wide-panel">
+          <h2>Verify Ticket</h2>
+          <form id="verifyTicketForm" class="stack-form">
+            <label for="verifyTicketId">Enter Ticket ID</label>
+            <div class="inline-form">
+              <input id="verifyTicketId" type="number" min="1" placeholder="Scan or enter ID" required />
+              <button type="submit" class="secondary-btn">Check Validity</button>
+            </div>
+            <div class="panel-title-row">
+              <span class="muted">Or scan a QR code</span>
+              <div class="inline-actions">
+                <button type="button" id="startScannerBtn" class="secondary-btn">Start Scanner</button>
+                <button type="button" id="stopScannerBtn" class="ghost-btn" disabled>Stop</button>
+              </div>
+            </div>
+            <div id="reader" class="scanner-shell"></div>
+            <div id="scannerStatus" class="status-box">Camera is idle.</div>
+            <button type="button" id="useTicketBtn" class="primary-btn" disabled>
+              Mark Ticket As Used
+            </button>
+          </form>
+          <div id="verifyStatusCard" class="verify-card">
+            <div class="verify-card-header">
+              <span id="verifyBadge" class="verify-badge neutral">Waiting</span>
+              <strong id="verifyHeadline">Verification result will appear here.</strong>
+            </div>
+            <p id="verifyStatus" class="verify-copy">
+              Verification checks whether the ticket exists and has not been used.
+            </p>
+            <div id="verifyMeta" class="verify-meta"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

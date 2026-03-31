@@ -2,6 +2,9 @@
 pragma solidity ^0.8.0;
 
 contract EventTicketing {
+    event EventCreated(uint indexed eventId, string name, address indexed admin, uint maxTickets);
+    event TicketIssued(uint indexed ticketId, uint indexed eventId, address indexed owner);
+    event TicketUsed(uint indexed ticketId, uint indexed eventId, address indexed admin);
 
     uint public eventCount = 0;
     uint public ticketCount = 0;
@@ -25,6 +28,9 @@ contract EventTicketing {
     mapping(uint => Ticket) public tickets;
 
     function createEvent(string memory _name, uint _maxTickets) public {
+        require(bytes(_name).length > 0, "Event name required");
+        require(_maxTickets > 0, "Max tickets must be greater than zero");
+
         eventCount++;
 
         events[eventCount] = Event({
@@ -34,6 +40,8 @@ contract EventTicketing {
             maxTickets: _maxTickets,
             ticketsIssued: 0
         });
+
+        emit EventCreated(eventCount, _name, msg.sender, _maxTickets);
     }
 
     function getTicket(uint _eventId) public {
@@ -52,6 +60,8 @@ contract EventTicketing {
         });
 
         e.ticketsIssued++;
+
+        emit TicketIssued(ticketCount, _eventId, msg.sender);
     }
 
     function verifyTicket(uint _ticketId) public view returns (bool) {
@@ -65,13 +75,14 @@ contract EventTicketing {
 
     function useTicket(uint _ticketId) public {
         Ticket storage t = tickets[_ticketId];
-        Event memory e = events[t.eventId];
+        Event storage e = events[t.eventId];
 
         require(t.id != 0, "Invalid ticket");
         require(!t.used, "Already used");
         require(msg.sender == e.admin, "Only admin can verify");
 
         t.used = true;
+
+        emit TicketUsed(_ticketId, t.eventId, msg.sender);
     }
 }
-

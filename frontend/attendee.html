@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attendee Portal</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script type="module" src="./attendee.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav">
+        <a href="./index.html">Home</a>
+        <a href="./organizer.html">Organizer</a>
+        <a class="active-link" href="./attendee.html">Attendee</a>
+      </nav>
+
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Attendee Portal</p>
+          <h1>Claim Tickets & Show Your QR</h1>
+          <p class="hero-copy">
+            This page is for ticket buyers. Browse events, claim a ticket on
+            Sepolia, and generate the QR code used for entry verification.
+          </p>
+        </div>
+        <div class="wallet-card">
+          <button id="connectWalletBtn" class="primary-btn">Connect Wallet</button>
+          <p id="walletStatus" class="muted">
+            Connect the attendee wallet on Sepolia.
+          </p>
+          <div class="network-info">
+            <span id="networkName">Network: Not connected</span>
+            <span id="accountAddress">Account: -</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="grid">
+        <section class="panel">
+          <h2>Contract Status</h2>
+          <div id="contractStatus" class="status-box">Waiting for wallet connection.</div>
+        </section>
+
+        <section class="panel">
+          <h2>Get Ticket</h2>
+          <form id="getTicketForm" class="stack-form">
+            <label for="ticketEventId">Event ID</label>
+            <input id="ticketEventId" type="number" min="1" placeholder="1" required />
+            <button type="submit" class="primary-btn">Get Ticket</button>
+          </form>
+          <div id="ticketMintStatus" class="status-box">
+            Mint a ticket for your connected wallet.
+          </div>
+        </section>
+
+        <section class="panel wide-panel">
+          <div class="panel-title-row">
+            <h2>Available Events</h2>
+            <button id="refreshEventsBtn" class="ghost-btn">Refresh</button>
+          </div>
+          <div id="eventsList" class="card-list empty-state">
+            Connect your attendee wallet on Sepolia to load events.
+          </div>
+        </section>
+
+        <section class="panel wide-panel">
+          <div class="panel-title-row">
+            <h2>My Tickets & QR</h2>
+            <button id="refreshMyTicketsBtn" class="ghost-btn">Refresh</button>
+          </div>
+          <div id="myTicketsList" class="card-list empty-state">
+            Connect your attendee wallet to view your tickets.
+          </div>
+          <div id="ticketDetails" class="ticket-details muted">
+            Select one of your tickets to see its on-chain details.
+          </div>
+          <canvas id="qrCanvas" class="qr-canvas" width="220" height="220"></canvas>
+          <div id="qrTicketIdLabel" class="qr-ticket-id muted">Ticket ID will appear here.</div>
+          <button id="downloadQrBtn" class="ghost-btn" disabled>Download QR</button>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
