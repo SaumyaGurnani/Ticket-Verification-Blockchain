@@ -4,6 +4,9 @@ ChainPass is a blockchain-based event ticketing dApp.
 
 It lets organizers create events, lets users claim unique on-chain tickets, generates a QR code for each ticket, and allows organizers to verify and use tickets only once.
 
+## Demo Video  
+[![Video Title](https://img.youtube.com/vi/JCIPIlkH0BA/0.jpg)](https://www.youtube.com/watch?v=JCIPIlkH0BA)
+
 ## Features
 
 - Create events on-chain
